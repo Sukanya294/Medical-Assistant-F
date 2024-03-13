@@ -3,6 +3,7 @@ from tkinter import ttk, filedialog
 from ttkthemes import ThemedStyle
 import pyaudio
 import wave
+import os
 import threading
 from datetime import datetime
 import time  # Import time module for time-related operations
@@ -19,9 +20,9 @@ class SpeechToTextConverter:
         self.root = root
         self.root.title("Speech to Text Converter")
 
-        self.audio_file = f"../../data/recorded_conversations/audio/{formatted_timestamp}.wav"
-        self.text_file = f"../../data/recorded_conversations/text/{formatted_timestamp}.txt"
-        self.highlighted_text_file = f"../../data/recorded_conversations/text_with_highlights/{formatted_timestamp}.txt"
+        self.audio_file = self.generate_absolute_path(f"../../data/recorded_conversations/audio/{formatted_timestamp}.wav")
+        self.text_file = self.generate_absolute_path(f"../../data/recorded_conversations/text/{formatted_timestamp}.txt")
+        self.highlighted_text_file = self.generate_absolute_path(f"../../data/recorded_conversations/text_with_highlights/{formatted_timestamp}.txt")
         self.is_recording = False
         self.start_time = None  # Variable to store start time
 
@@ -45,6 +46,11 @@ class SpeechToTextConverter:
 
         style = ThemedStyle(root)
         style.set_theme("radiance")
+
+    @staticmethod
+    def generate_absolute_path(relative_path):
+        absolute_path = os.path.abspath(relative_path)
+        return absolute_path
 
     def start_recording(self):
         self.is_recording = True
