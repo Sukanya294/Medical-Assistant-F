@@ -77,7 +77,7 @@ def highlight_text(input_file):
 
     excel_file_path = generate_absolute_path(f'../../data/excel_report/entities_data.xlsx')
     df = pd.read_excel(excel_file_path)
-    # df = df.append(entities, ignore_index=True)
+    df = df._append(entities, ignore_index=True)
     df.to_excel(excel_file_path, index=False)
     print(f'Added below records to excel report {entities}')
 
