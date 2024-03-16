@@ -22,7 +22,7 @@ python3 -m venv venv
 ```
 2. Activate the virtual environment 
 ```commandline
-source venv/bin/activate
+venv\Scripts\activate
 ```
 3. Install the required dependencies 
 ```commandline

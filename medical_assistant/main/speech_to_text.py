@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
+
+import self
 from ttkthemes import ThemedStyle
 import pyaudio
 import wave
@@ -15,7 +17,7 @@ from medical_assistant.main.entity_recognition_service import highlight_text
 class SpeechToTextConverter:
     def __init__(self, root):
         current_timestamp = datetime.now()
-        formatted_timestamp = current_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        formatted_timestamp = current_timestamp.strftime("%Y-%m-%d %H-%M-%S")
 
         self.root = root
         self.root.title("Speech to Text Converter")
@@ -24,7 +26,7 @@ class SpeechToTextConverter:
         self.text_file = self.generate_absolute_path(f"../../data/recorded_conversations/text/{formatted_timestamp}.txt")
         self.highlighted_text_file = self.generate_absolute_path(f"../../data/recorded_conversations/text_with_highlights/{formatted_timestamp}.txt")
         self.is_recording = False
-        self.start_time = None  # Variable to store start time
+        self.start_time = None
 
         self.recognizer = sr.Recognizer()
         self.microphone = sr.AudioFile(self.audio_file)
@@ -34,6 +36,7 @@ class SpeechToTextConverter:
         self.convert_button = ttk.Button(root, text="Convert", command=self.convert_audio, style="TButton")
         self.text_display = tk.Text(root, height=10, width=40, wrap=tk.WORD)
         self.time_label = tk.Label(root, text="Recording Time: 00:00", font=("Arial", 12))
+
         self.logo_image = tk.PhotoImage(file='../../data/images/medical_assistant_logo.png')
         self.logo_label = tk.Label(root, image=self.logo_image)
 
@@ -41,8 +44,8 @@ class SpeechToTextConverter:
         self.start_button.grid(row=1, column=0, pady=10, padx=10)
         self.stop_button.grid(row=1, column=1, pady=10, padx=10)
         self.convert_button.grid(row=2, column=0, columnspan=2, pady=10, padx=10)
-        # self.text_display.grid(row=3, column=0, columnspan=2, pady=10, padx=10)
-        self.time_label.grid(row=4, column=0, columnspan=2, pady=10, padx=10)
+        self.time_label.grid(row=3, column=0, columnspan=2, pady=10, padx=10)
+        self.text_display.grid(row=4, column=0, columnspan=2, pady=10, padx=10)
 
         style = ThemedStyle(root)
         style.set_theme("radiance")
@@ -50,11 +53,14 @@ class SpeechToTextConverter:
     @staticmethod
     def generate_absolute_path(relative_path):
         absolute_path = os.path.abspath(relative_path)
+        directory = os.path.dirname(absolute_path)
+        if not os.path.exists(directory):
+           os.makedirs(directory)
         return absolute_path
 
     def start_recording(self):
         self.is_recording = True
-        self.start_time = time.time()  # Record start time
+        self.start_time = time.time()
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         threading.Thread(target=self.record_audio).start()
@@ -70,6 +76,10 @@ class SpeechToTextConverter:
         CHANNELS = 1
         RATE = 44100
 
+        audio_dir = os.path.dirname(self.audio_file)
+        if not os.path.exists(audio_dir):
+            os.makedirs(audio_dir)
+
         p = pyaudio.PyAudio()
         stream = p.open(format=FORMAT,
                         channels=CHANNELS,
@@ -83,7 +93,6 @@ class SpeechToTextConverter:
             data = stream.read(CHUNK)
             frames.append(data)
 
-            # Calculate and display recording time
             elapsed_time = time.time() - self.start_time
             time_str = time.strftime("%M:%S", time.gmtime(elapsed_time))
             self.time_label.config(text=f"Recording Time: {time_str}")
@@ -91,8 +100,7 @@ class SpeechToTextConverter:
         stream.stop_stream()
         stream.close()
         p.terminate()
-        f = open(self.audio_file, 'w')
-        f.close()
+
         wf = wave.open(self.audio_file, 'wb')
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(p.get_sample_size(FORMAT))
@@ -106,13 +114,10 @@ class SpeechToTextConverter:
         with self.microphone as source:
             audio_data = self.recognizer.record(source)
         try:
-            print('initialise speech-to-text in :', self.text_file)
-            f = open(self.audio_file, 'w')
-            f.close()
             text = self.recognizer.recognize_google(audio_data)
             self.text_display.delete(1.0, tk.END)
             self.text_display.insert(tk.END, text)
-            self.publish_text(text)  # Save text to file
+            self.publish_text(text)
             print('successfully saved speech-to-text results in :', self.text_file)
         except sr.UnknownValueError:
             self.text_display.delete(1.0, tk.END)
@@ -120,8 +125,6 @@ class SpeechToTextConverter:
         except sr.RequestError as e:
             self.text_display.delete(1.0, tk.END)
             self.text_display.insert(tk.END, f"Error: {str(e)}")
-        # except FileNotFoundError:
-        #     print('Generated new wav file under ./data/recorded_conversations/audio')
 
     def publish_text(self, text):
         with open(self.text_file, "w") as file:
