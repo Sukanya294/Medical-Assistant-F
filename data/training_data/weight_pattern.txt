@@ -1,0 +1,10 @@
+I am (\d+) kg
+My weight is about (\d+) kg
+I weigh (\d+) kilograms
+I am (\d+) kgs
+My weight is approximately (\d+) kilograms                        
+My current weight is (\d+) kg
+I weigh roughly (\d+) kg
+I am about (\d+) kgs
+My weight is (\d+) kg
+I weigh (\d+) kilos

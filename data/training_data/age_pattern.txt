@@ -1,0 +1,10 @@
+I'm (\d+) years old
+I am (\d+) yrs old
+I'm turning (\d+) this year
+I am (\d+) years of age
+I am (\d+) y/o
+(\d+) is my age
+I'll be (\d+) soon
+My age is (\d+)
+I'm (\d+) years young
+(\d+) years is my age
