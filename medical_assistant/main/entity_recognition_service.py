@@ -21,6 +21,42 @@ def generate_absolute_path(relative_path):
     return absolute_path
 
 
+def get_symptoms_keywords_train_data():
+    file_path = generate_absolute_path('../../data/training_data/symptoms.txt')
+    with open(file_path, 'r') as f:
+        values = f.readlines()
+        lines = [line.strip() for line in values]
+
+    return lines
+
+
+def get_age_pattern_train_data():
+    file_path = generate_absolute_path('../../data/training_data/age_pattern.txt')
+    with open(file_path, 'r') as f:
+        values = f.readlines()
+        lines = [line.strip() for line in values]
+
+    return lines
+
+
+def get_weight_pattern_train_data():
+    file_path = generate_absolute_path('../../data/training_data/weight_pattern.txt')
+    with open(file_path, 'r') as f:
+        values = f.readlines()
+        lines = [line.strip() for line in values]
+
+    return lines
+
+
+def get_name_pattern_train_data():
+    file_path = generate_absolute_path('../../data/training_data/name_pattern.txt')
+    with open(file_path, 'r') as f:
+        values = f.readlines()
+        lines = [line.strip() for line in values]
+
+    return lines
+
+
 def extract_entities(text):
     entities = {
         'name': None,
@@ -29,25 +65,31 @@ def extract_entities(text):
         'symptoms': None
     }
 
-    # Extract name using regex pattern
-    name_pattern = config.get('entity_recognition', 'name_pattern')
-    match = re.search(name_pattern, text)
-    if match:
-        entities['name'] = match.group(1)
+    # Extract name using pattern matching
+    name_patterns = get_name_pattern_train_data()
+    for pattern in name_patterns:
+        match = re.search(pattern, text)
+        if match:
+            entities['name'] = match.group(1)
+            break
 
-    # Extract age and weight using regex patterns
-    age_pattern = config.get('entity_recognition', 'age_pattern')
-    weight_pattern = config.get('entity_recognition', 'weight_pattern')
-    age_match = re.search(age_pattern, text)
-    weight_match = re.search(weight_pattern, text)
-    if age_match:
-        entities['age'] = age_match.group(1)
-    if weight_match:
-        entities['weight'] = weight_match.group(1)
+    # Extract age and weight using pattern matching
+    age_patterns = get_age_pattern_train_data()
+    for pattern in age_patterns:
+        match = re.search(pattern, text)
+        if match:
+            entities['age'] = match.group(1)
+            break
+
+    weight_patterns = get_weight_pattern_train_data()
+    for pattern in weight_patterns:
+        match = re.search(pattern, text)
+        if match:
+            entities['weight'] = match.group(1)
+            break
 
     # Extract symptoms using keyword matching
-    values = config.get('entity_recognition', 'symptoms_keywords').split(',')
-    symptoms_keywords = [value.strip("[ ] '") for value in values]
+    symptoms_keywords = get_symptoms_keywords_train_data()
     for keyword in symptoms_keywords:
         if keyword in text:
             entities['symptoms'] = keyword

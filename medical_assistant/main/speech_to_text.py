@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
 
-import self
 from ttkthemes import ThemedStyle
 import pyaudio
 import wave
