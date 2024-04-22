@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
-
+import customtkinter as ctk
+from PIL import Image
 from ttkthemes import ThemedStyle
 import pyaudio
 import wave
@@ -20,6 +21,8 @@ class SpeechToTextConverter:
 
         self.root = root
         self.root.title("Speech to Text Converter")
+        # self.root.state('zoomed')
+        # self.root.wm_attributes('-fullscreen', True)
 
         self.audio_file = self.generate_absolute_path(f"../../data/recorded_conversations/audio/{formatted_timestamp}.wav")
         self.text_file = self.generate_absolute_path(f"../../data/recorded_conversations/text/{formatted_timestamp}.txt")
@@ -29,25 +32,27 @@ class SpeechToTextConverter:
 
         self.recognizer = sr.Recognizer()
         self.microphone = sr.AudioFile(self.audio_file)
+        self.logo_image = ctk.CTkImage(
+            light_image=Image.open('../../data/images/medical_assistant_logo.png'),
+            size=(254, 200)
+        )
 
-        self.start_button = ttk.Button(root, text="Start Recording", command=self.start_recording, style="TButton")
-        self.stop_button = ttk.Button(root, text="Stop Recording", command=self.stop_recording, style="TButton")
-        self.convert_button = ttk.Button(root, text="Convert", command=self.convert_audio, style="TButton")
-        self.text_display = tk.Text(root, height=10, width=40, wrap=tk.WORD)
-        self.time_label = tk.Label(root, text="Recording Time: 00:00", font=("Arial", 12))
+        self.start_button = ctk.CTkButton(root, text="Start Recording", command=self.start_recording)
+        self.stop_button = ctk.CTkButton(root, text="Stop Recording", command=self.stop_recording)
+        self.convert_button = ctk.CTkButton(root, text="Convert", command=self.convert_audio)
+        self.text_display = ctk.CTkTextbox(root, height=200, width=300, wrap=tk.WORD)
+        self.time_label = ctk.CTkLabel(root, text="Recording Time: 00:00", font=("Arial", 12))
+        self.logo_label = ctk.CTkLabel(root, image=self.logo_image)
 
-        self.logo_image = tk.PhotoImage(file='../../data/images/medical_assistant_logo.png')
-        self.logo_label = tk.Label(root, image=self.logo_image)
-
-        self.logo_label.grid(row=0, column=0, columnspan=2, padx=10)
+        self.logo_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
         self.start_button.grid(row=1, column=0, pady=10, padx=10)
         self.stop_button.grid(row=1, column=1, pady=10, padx=10)
         self.convert_button.grid(row=2, column=0, columnspan=2, pady=10, padx=10)
         self.time_label.grid(row=3, column=0, columnspan=2, pady=10, padx=10)
         self.text_display.grid(row=4, column=0, columnspan=2, pady=10, padx=10)
 
-        style = ThemedStyle(root)
-        style.set_theme("radiance")
+        # style = ThemedStyle(root)
+        # style.set_theme("radiance")
 
     @staticmethod
     def generate_absolute_path(relative_path):

@@ -1,9 +1,11 @@
+import configparser
+import logging
 import os
+import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
-import pandas as pd
-import logging
-import configparser
+
+from customtkinter import CTkFont
 
 from medical_assistant.main.speech_to_text import SpeechToTextConverter
 
@@ -15,6 +17,8 @@ class Runner:
         # fetching valid users from config.ini
         self.config.read('../config/config.ini')
         self.valid_users = self.config['valid_users']
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
 
         self.stt = None
 
@@ -33,7 +37,8 @@ class Runner:
             messagebox.showerror("Login Failed", "Invalid username or password")
 
     def open_record_window(self):
-        root = tk.Tk()
+        root = ctk.CTk()
+        root.state('zoomed')
         self.stt = SpeechToTextConverter(root)
         root.mainloop()
 
@@ -43,23 +48,27 @@ if __name__ == "__main__":
 
     # Create the main window for login
     logging.info("Validating User login...")
-    login_window = tk.Tk()
-    login_window.title("Login")
+    login_window = ctk.CTk()
+    login_window.geometry("700x500")
+    login_window.title("Medical Assistant")
+    login_window.state('zoomed')
+    # login_window.attributes('-fullscreen', True)
+
+    label = ctk.CTkLabel(login_window, text="Login to Medical Assistant", font=("Arial", 30))
+    label.pack(pady=20)
+    frame = ctk.CTkFrame(master=login_window)
+    frame.pack(pady=20, padx=40, fill='both', expand=True)
 
     # Create labels and entry fields for login
-    username_label = tk.Label(login_window, text="Username:")
-    username_label.pack()
-    username_entry = tk.Entry(login_window)
-    username_entry.pack()
+    username_entry = ctk.CTkEntry(master=frame, placeholder_text="Username", width=300, height=50)
+    username_entry.pack(pady=12, padx=10)
 
-    password_label = tk.Label(login_window, text="Password:")
-    password_label.pack()
-    password_entry = tk.Entry(login_window, show="*")  # Show asterisks for password
-    password_entry.pack()
+    password_entry = ctk.CTkEntry(master=frame, placeholder_text="Password", show="*", width=300, height=50)
+    password_entry.pack(pady=12, padx=10)
 
     # Create a login button
-    login_button = tk.Button(login_window, text="Login", command=runner_obj.check_login)
-    login_button.pack()
+    login_button = ctk.CTkButton(master=frame, text='Login', command=runner_obj.check_login, width=300, height=50)
+    login_button.pack(pady=12, padx=10)
 
     # Start the tkinter main loop for the login window
     login_window.mainloop()

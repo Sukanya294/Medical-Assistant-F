@@ -1,8 +1,10 @@
-pandas
-configparser
+pandas~=2.1.2
+configparser~=6.0.0
 openpyxl
-nltk
+nltk~=3.8.1
 spacy
 SpeechRecognition
-ttkthemes
-PyAudio
+ttkthemes~=3.2.2
+PyAudio~=0.2.14
+
+customtkinter~=5.2.2
