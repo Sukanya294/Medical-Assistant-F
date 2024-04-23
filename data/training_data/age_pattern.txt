@@ -1,5 +1,5 @@
 I'm (\d+) years old
-I am (\d+) yrs old
+I am (\d+) years old
 I'm turning (\d+) this year
 I am (\d+) years of age
 I am (\d+) y/o

@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5; /* Light gray background */
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('medical_background.jpg'); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px); /* Add a blur effect to the background */
+}
+
+.login-box {
+    position: relative;
+    z-index: 1;
+    max-width: 400px;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.login-box h2 {
+    text-align: center;
+    color: #333; /* Dark gray text color */
+    margin-bottom: 30px;
+}
+
+.textbox {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.textbox input {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333; /* Dark gray text color */
+}
+
+.textbox input:focus {
+    outline: none;
+    border: 2px solid #007bff; /* Blue border color when focused */
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Blue button color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff; /* White text color */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue color on hover */
+}
