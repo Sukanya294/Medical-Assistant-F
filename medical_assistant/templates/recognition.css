@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1200px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.half {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.half:nth-child(1) {
+    flex: 1 1 60%;
+}
+
+.half:nth-child(2) {
+    flex: 1 1 40%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.conversation, .highlighted-text {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.btn {
+    padding: 15px 30px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.start-btn {
+    background-color: #4CAF50; /* Green button color */
+}
+
+.stop-btn {
+    background-color: #f44336; /* Red button color */
+}
+
+.convert-btn {
+    background-color: #007bff; /* Blue button color */
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 768px) {
+    .half {
+        width: 100%;
+    }
+
+    .half:nth-child(1), .half:nth-child(2) {
+        flex: 1 1 100%;
+    }
+}
